@@ -10,7 +10,7 @@ export function PassportCard() {
     const totalFlights = flights.length;
     const totalHours = flights.reduce((sum, flight) => sum + flight.durationHours, 0);
 
-    const uniqueAirports = new Set(flights.flatMap(f => [f.origin, f.destination])).size;
+    const uniqueAirports = new Set(flights.flatMap(f => f.waypoints)).size;
     const uniqueAircraft = new Set(flights.map(f => f.aircraft)).size;
 
     // Calculate total cost

@@ -7,8 +7,7 @@ interface FlightListItemProps {
     flightNumber: string;
     routeCode: string;
     date: string;
-    origin: string;
-    destination: string;
+    waypoints: string[];
 }
 
 export function FlightListItem({
@@ -17,8 +16,7 @@ export function FlightListItem({
     flightNumber,
     routeCode,
     date,
-    origin,
-    destination,
+    waypoints,
 }: FlightListItemProps) {
     return (
         <View style={styles.container}>
@@ -32,7 +30,7 @@ export function FlightListItem({
                     <Text style={styles.date}>{date}</Text>
                 </View>
                 <Text style={styles.routeNames}>
-                    {origin} to {destination}
+                    {waypoints.join(' → ')}
                 </Text>
             </View>
         </View>

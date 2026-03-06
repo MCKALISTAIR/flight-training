@@ -51,10 +51,9 @@ export function DashboardSheet() {
                                 airlineCode={flight.aircraft.substring(0, 2).toUpperCase()} // Pseudo-airline code for training
                                 airlineColor="#333" // Default dark color for training flights
                                 flightNumber={flight.aircraft}
-                                routeCode={`${flight.origin} → ${flight.destination}`}
+                                routeCode={`${flight.waypoints[0]} → ${flight.waypoints[flight.waypoints.length - 1]}`}
                                 date={flight.date}
-                                origin={flight.origin}
-                                destination={flight.destination}
+                                waypoints={flight.waypoints}
                             />
                         ))}
                     </View>
