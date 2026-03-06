@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Upload, ChevronRight } from 'lucide-react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Upload, ChevronRight, Plane } from 'lucide-react-native';
 import { useAppStore } from '@/store/useAppStore';
 
 export function PassportCard() {
@@ -17,32 +16,28 @@ export function PassportCard() {
     const totalCost = flights.reduce((sum, flight) => sum + (flight.cost || 0), 0);
 
     return (
-        <LinearGradient
-            colors={['#1F1160', '#0B297E']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.card}
-        >
+        <View style={styles.card}>
             <View style={styles.headerRow}>
-                <View>
-                    <Text style={styles.title}>TRAINING PASSPORT</Text>
-                    <Text style={styles.subtitle}>LOGBOOK SUMMARY</Text>
+                <View style={styles.headerLeft}>
+                    <Plane size={24} color="#FF5722" />
+                    <View style={styles.headerTextContainer}>
+                        <Text style={styles.title}>Pilot Totals</Text>
+                        <Text style={styles.subtitle}>All Recorded Training</Text>
+                    </View>
                 </View>
                 <TouchableOpacity>
-                    <Upload size={20} color="#FFF" />
+                    <Upload size={20} color="#444" />
                 </TouchableOpacity>
             </View>
 
             <View style={styles.statsGrid}>
+                <View style={[styles.statCell, styles.primaryStatCell]}>
+                    <Text style={styles.statLabel}>TOTAL HOURS</Text>
+                    <Text style={styles.statValueOrange}>{totalHours.toFixed(1)} <Text style={styles.unit}>hrs</Text></Text>
+                </View>
                 <View style={styles.statCell}>
                     <Text style={styles.statLabel}>FLIGHTS</Text>
                     <Text style={styles.statValue}>{totalFlights}</Text>
-                    <Text style={styles.statSubValue}>Total recorded</Text>
-                </View>
-                <View style={styles.statCell}>
-                    <Text style={styles.statLabel}>FLIGHT TIME</Text>
-                    <Text style={styles.statValue}>{totalHours.toFixed(1)}h</Text>
-                    <Text style={styles.statSubValue}>Total airborne</Text>
                 </View>
             </View>
 
@@ -56,36 +51,14 @@ export function PassportCard() {
                     <Text style={styles.statValueSmall}>{uniqueAirports}</Text>
                 </View>
                 <View style={styles.statCellSmall}>
-                    <Text style={styles.statLabel}>TOTAL COST</Text>
+                    <Text style={styles.statLabel}>TOTAL EXPENSES</Text>
                     <Text style={styles.statValueSmall}>£{totalCost.toFixed(2)}</Text>
                 </View>
             </View>
 
             <TouchableOpacity style={styles.footerButton}>
-                <Text style={styles.footerButtonText}>All Flight Stats</Text>
-                <ChevronRight size={16} color="#FFF" />
-            </TouchableOpacity>
-        </LinearGradient>
-    );
-}
-
-export function DelayCard() {
-    return (
-        <View style={[styles.card, styles.delayCard]}>
-            <View style={styles.headerRow}>
-                <View>
-                    <Text style={styles.delayHugeValue}>4</Text>
-                    <Text style={styles.delayTitle}>hours lost from delays</Text>
-                    <Text style={styles.delaySubtitle}>Delayed flights averaged 21m late</Text>
-                </View>
-                <TouchableOpacity>
-                    <Upload size={20} color="#FFF" />
-                </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity style={[styles.footerButton, styles.delayFooter]}>
-                <Text style={styles.footerButtonText}>All Delay Stats</Text>
-                <ChevronRight size={16} color="#FFF" />
+                <Text style={styles.footerButtonText}>View Detailed Analytics</Text>
+                <ChevronRight size={16} color="#666" />
             </TouchableOpacity>
         </View>
     );
@@ -93,101 +66,106 @@ export function DelayCard() {
 
 const styles = StyleSheet.create({
     card: {
-        borderRadius: 16,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
         padding: 20,
         marginHorizontal: 16,
         marginBottom: 16,
+        borderWidth: 1,
+        borderColor: '#EAEAEE',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 2,
     },
     headerRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         marginBottom: 24,
     },
+    headerLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    headerTextContainer: {
+        marginLeft: 12,
+    },
     title: {
-        color: '#FFF',
-        fontSize: 16,
-        fontWeight: '600',
-        letterSpacing: 0.5,
-        marginBottom: 4,
+        color: '#111111',
+        fontSize: 18,
+        fontWeight: '800',
+        letterSpacing: -0.5,
     },
     subtitle: {
-        color: '#A0B0FF',
-        fontSize: 10,
-        fontWeight: '700',
-        letterSpacing: 1,
+        color: '#666666',
+        fontSize: 12,
+        fontWeight: '600',
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
     },
     statsGrid: {
         flexDirection: 'row',
-        marginBottom: 24,
+        marginBottom: 20,
     },
     statCell: {
         flex: 1,
     },
+    primaryStatCell: {
+        flex: 1.5,
+    },
     statLabel: {
-        color: '#A0B0FF',
+        color: '#666666',
         fontSize: 11,
-        fontWeight: '600',
+        fontWeight: '700',
         letterSpacing: 0.5,
         marginBottom: 4,
     },
     statValue: {
-        color: '#FFF',
+        color: '#111111',
         fontSize: 32,
-        fontWeight: '700',
-        marginBottom: 4,
+        fontWeight: '800',
+        letterSpacing: -1,
     },
-    statSubValue: {
-        color: '#A0B0FF',
-        fontSize: 13,
+    statValueOrange: {
+        color: '#FF5722',
+        fontSize: 36,
+        fontWeight: '800',
+        letterSpacing: -1,
+    },
+    unit: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#666666',
     },
     statsGridSmall: {
         flexDirection: 'row',
-        marginBottom: 24,
+        marginBottom: 20,
+        paddingTop: 16,
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderColor: '#EAEAEE',
     },
     statCellSmall: {
         flex: 1,
     },
     statValueSmall: {
-        color: '#FFF',
+        color: '#111111',
         fontSize: 20,
         fontWeight: '700',
+        letterSpacing: -0.5,
     },
     footerButton: {
-        backgroundColor: 'rgba(255,255,255,0.1)',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-        borderRadius: 8,
+        paddingTop: 16,
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderColor: '#EAEAEE',
     },
     footerButtonText: {
-        color: '#FFF',
+        color: '#111111',
         fontSize: 14,
         fontWeight: '600',
-    },
-    delayCard: {
-        backgroundColor: '#8B1A10',
-    },
-    delayHugeValue: {
-        color: '#FFF',
-        fontSize: 56,
-        fontWeight: '800',
-        lineHeight: 60,
-    },
-    delayTitle: {
-        color: '#FFF',
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 4,
-    },
-    delaySubtitle: {
-        color: '#FFB4A9',
-        fontSize: 13,
-    },
-    delayFooter: {
-        backgroundColor: 'rgba(255,255,255,0.15)',
-        marginTop: 16,
     },
 });

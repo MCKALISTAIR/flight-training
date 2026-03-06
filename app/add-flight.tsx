@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAppStore } from '@/store/useAppStore';
-import { Plus, Minus } from 'lucide-react-native';
+import { Plus, Minus, X } from 'lucide-react-native';
 
 export default function AddFlightScreen() {
     const router = useRouter();
     const addFlight = useAppStore((state) => state.addFlight);
 
-    const [date, setDate] = useState('2026-03-06');
+    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [aircraft, setAircraft] = useState('');
     const [waypoints, setWaypoints] = useState(['', '']);
     const [duration, setDuration] = useState('');
@@ -51,174 +51,225 @@ export default function AddFlightScreen() {
     };
 
     return (
-        <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-            <Text style={styles.headerTitle}>Log a Flight</Text>
-
-            <View style={styles.formGroup}>
-                <Text style={styles.label}>DATE</Text>
-                <TextInput
-                    style={styles.input}
-                    value={date}
-                    onChangeText={setDate}
-                    placeholder="YYYY-MM-DD"
-                    placeholderTextColor="#666"
-                />
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.header}>
+                <Text style={styles.headerTitle}>New Flight</Text>
+                <TouchableOpacity onPress={() => router.back()} style={styles.closeBtn}>
+                    <X size={24} color="#111111" />
+                </TouchableOpacity>
             </View>
 
-            <View style={styles.waypointsContainer}>
-                <View style={styles.waypointHeaderRow}>
-                    <Text style={styles.label}>ROUTE WAYPOINTS (ICAO)</Text>
-                    <TouchableOpacity onPress={handleAddWaypoint} style={styles.addWaypointBtn}>
-                        <Plus size={16} color="#8DF5AA" />
-                        <Text style={styles.addWaypointText}>Add</Text>
-                    </TouchableOpacity>
-                </View>
+            <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>DATE & AIRCRAFT</Text>
 
-                {waypoints.map((wp, index) => (
-                    <View key={index} style={styles.waypointRow}>
-                        <View style={[styles.formGroup, styles.flex1, { marginBottom: 12 }]}>
+                    <View style={styles.formRow}>
+                        <View style={[styles.formGroup, styles.flex1, { marginRight: 16 }]}>
+                            <Text style={styles.label}>DATE</Text>
                             <TextInput
                                 style={styles.input}
-                                value={wp}
-                                onChangeText={(text) => updateWaypoint(text, index)}
-                                placeholder={index === 0 ? "Origin" : index === waypoints.length - 1 ? "Destination" : `Waypoint ${index + 1}`}
-                                autoCapitalize="characters"
-                                maxLength={4}
-                                placeholderTextColor="#666"
+                                value={date}
+                                onChangeText={setDate}
+                                placeholder="YYYY-MM-DD"
+                                placeholderTextColor="#A0A0A0"
                             />
                         </View>
-                        {waypoints.length > 2 && (
-                            <TouchableOpacity onPress={() => handleRemoveWaypoint(index)} style={styles.removeWaypointBtn}>
-                                <Minus size={20} color="#FF6666" />
-                            </TouchableOpacity>
-                        )}
+                        <View style={[styles.formGroup, styles.flex1]}>
+                            <Text style={styles.label}>AIRCRAFT</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={aircraft}
+                                onChangeText={setAircraft}
+                                placeholder="e.g. C172"
+                                placeholderTextColor="#A0A0A0"
+                                autoCapitalize="characters"
+                            />
+                        </View>
                     </View>
-                ))}
-            </View>
-
-            <View style={styles.formGroup}>
-                <Text style={styles.label}>AIRCRAFT TYPE</Text>
-                <TextInput
-                    style={styles.input}
-                    value={aircraft}
-                    onChangeText={setAircraft}
-                    placeholder="e.g. Cessna 152"
-                    placeholderTextColor="#666"
-                />
-            </View>
-
-            <View style={styles.formRow}>
-                <View style={[styles.formGroup, styles.flex1, { marginRight: 16 }]}>
-                    <Text style={styles.label}>DURATION (HOURS)</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={duration}
-                        onChangeText={setDuration}
-                        keyboardType="decimal-pad"
-                        placeholder="e.g. 1.5"
-                        placeholderTextColor="#666"
-                    />
                 </View>
-                <View style={[styles.formGroup, styles.flex1]}>
-                    <Text style={styles.label}>COST (£) (OPTIONAL)</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={cost}
-                        onChangeText={setCost}
-                        keyboardType="decimal-pad"
-                        placeholder="e.g. 120"
-                        placeholderTextColor="#666"
-                    />
-                </View>
-            </View>
 
-            <TouchableOpacity style={styles.submitButton} onPress={handleSave}>
-                <Text style={styles.submitButtonText}>Save Flight</Text>
-            </TouchableOpacity>
-        </ScrollView>
+                <View style={styles.section}>
+                    <View style={styles.sectionHeaderRow}>
+                        <Text style={styles.sectionTitle}>ROUTE WAYPOINTS</Text>
+                        <TouchableOpacity onPress={handleAddWaypoint} style={styles.addBtn}>
+                            <Plus size={14} color="#FF5722" />
+                            <Text style={styles.addBtnText}>Add</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {waypoints.map((wp, index) => (
+                        <View key={index} style={styles.waypointRow}>
+                            <View style={[styles.formGroup, styles.flex1]}>
+                                <TextInput
+                                    style={styles.input}
+                                    value={wp}
+                                    onChangeText={(text) => updateWaypoint(text, index)}
+                                    placeholder={index === 0 ? "Origin ICAO" : index === waypoints.length - 1 ? "Destination ICAO" : `Waypoint ICAO`}
+                                    autoCapitalize="characters"
+                                    maxLength={4}
+                                    placeholderTextColor="#A0A0A0"
+                                />
+                            </View>
+                            {waypoints.length > 2 && (
+                                <TouchableOpacity onPress={() => handleRemoveWaypoint(index)} style={styles.removeBtn}>
+                                    <Minus size={20} color="#666666" />
+                                </TouchableOpacity>
+                            )}
+                        </View>
+                    ))}
+                </View>
+
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>LOGGING DETAILS</Text>
+                    <View style={styles.formRow}>
+                        <View style={[styles.formGroup, styles.flex1, { marginRight: 16 }]}>
+                            <Text style={styles.label}>DURATION (HRS)</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={duration}
+                                onChangeText={setDuration}
+                                keyboardType="decimal-pad"
+                                placeholder="e.g. 1.5"
+                                placeholderTextColor="#A0A0A0"
+                            />
+                        </View>
+                        <View style={[styles.formGroup, styles.flex1]}>
+                            <Text style={styles.label}>COST (£)</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={cost}
+                                onChangeText={setCost}
+                                keyboardType="decimal-pad"
+                                placeholder="e.g. 120"
+                                placeholderTextColor="#A0A0A0"
+                            />
+                        </View>
+                    </View>
+                </View>
+
+                <TouchableOpacity style={styles.submitButton} onPress={handleSave}>
+                    <Text style={styles.submitButtonText}>Save Flight</Text>
+                </TouchableOpacity>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    safeArea: {
         flex: 1,
-        backgroundColor: '#1E1E1E',
+        backgroundColor: '#FFFFFF',
     },
-    content: {
-        padding: 24,
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 16,
+        paddingHorizontal: 20,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#EAEAEE',
     },
     headerTitle: {
-        color: '#FFF',
-        fontSize: 28,
+        color: '#111111',
+        fontSize: 18,
         fontWeight: '700',
-        marginBottom: 32,
     },
-    formGroup: {
-        marginBottom: 24,
+    closeBtn: {
+        position: 'absolute',
+        right: 20,
     },
-    waypointsContainer: {
-        marginBottom: 12,
+    container: {
+        flex: 1,
+        backgroundColor: '#F9F9F9',
     },
-    waypointHeaderRow: {
+    content: {
+        padding: 20,
+    },
+    section: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 20,
+        borderWidth: 1,
+        borderColor: '#EAEAEE',
+    },
+    sectionHeaderRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        marginBottom: 12,
-    },
-    addWaypointBtn: {
-        flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-        backgroundColor: 'rgba(141, 245, 170, 0.1)',
-        borderRadius: 8,
+        marginBottom: 16,
     },
-    addWaypointText: {
-        color: '#8DF5AA',
-        fontSize: 12,
-        fontWeight: '600',
-        marginLeft: 4,
+    sectionTitle: {
+        color: '#666666',
+        fontSize: 11,
+        fontWeight: '700',
+        letterSpacing: 1,
+        marginBottom: 16,
     },
-    waypointRow: {
+    formRow: {
         flexDirection: 'row',
-        alignItems: 'center',
     },
-    removeWaypointBtn: {
-        padding: 12,
-        marginLeft: 8,
-        backgroundColor: '#2A2A2A',
-        borderRadius: 8,
+    formGroup: {
         marginBottom: 12,
     },
     flex1: {
         flex: 1,
     },
-    formRow: {
-        flexDirection: 'row',
-    },
     label: {
-        color: '#8DF5AA',
-        fontSize: 12,
+        color: '#A0A0A0',
+        fontSize: 10,
         fontWeight: '700',
-        letterSpacing: 1,
-        marginBottom: 8,
+        letterSpacing: 0.5,
+        marginBottom: 6,
     },
     input: {
-        backgroundColor: '#2A2A2A',
-        color: '#FFF',
+        backgroundColor: '#FFFFFF',
+        color: '#111111',
+        borderWidth: 1,
+        borderColor: '#EAEAEE',
         borderRadius: 8,
-        padding: 16,
+        padding: 14,
         fontSize: 16,
+        fontWeight: '500',
+    },
+    waypointRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    addBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        backgroundColor: '#FFF0ED',
+        borderRadius: 6,
+    },
+    addBtnText: {
+        color: '#FF5722',
+        fontSize: 12,
+        fontWeight: '700',
+        marginLeft: 4,
+    },
+    removeBtn: {
+        padding: 10,
+        marginLeft: 8,
+        marginBottom: 12,
     },
     submitButton: {
-        backgroundColor: '#8DF5AA',
-        borderRadius: 8,
+        backgroundColor: '#FF5722',
+        borderRadius: 12,
         padding: 16,
         alignItems: 'center',
-        marginTop: 16,
+        marginTop: 8,
+        marginBottom: 40,
+        shadowColor: '#FF5722',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 5,
     },
     submitButtonText: {
-        color: '#000',
+        color: '#FFFFFF',
         fontSize: 16,
         fontWeight: '700',
     },

@@ -27,21 +27,21 @@ export function DashboardHeader() {
                 </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.name}>{profileName || 'Trainee Pilot'}</Text>
-                    <Text style={styles.subtitle}>My Training Logbook</Text>
+                    <Text style={styles.subtitle}>Logbook Dashboard</Text>
                 </View>
                 <TouchableOpacity style={styles.closeButton} onPress={() => router.push('/add-flight')}>
-                    <Plus size={20} color="#FFF" />
+                    <Plus size={20} color="#FFFFFF" />
                 </TouchableOpacity>
             </View>
 
             {/* Action Buttons */}
             <View style={styles.actionsRow}>
                 <TouchableOpacity style={styles.actionButton}>
-                    <BookOpen size={16} color="#FFFFFF" style={styles.icon} />
+                    <BookOpen size={16} color="#444" style={styles.icon} />
                     <Text style={styles.actionText}>UK Licenses</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.actionButton}>
-                    <Settings size={16} color="#FFFFFF" style={styles.icon} />
+                    <Settings size={16} color="#444" style={styles.icon} />
                     <Text style={styles.actionText}>Settings</Text>
                 </TouchableOpacity>
             </View>
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingTop: 8,
         paddingBottom: 16,
+        backgroundColor: '#FFFFFF',
     },
     profileRow: {
         flexDirection: 'row',
@@ -77,41 +78,43 @@ const styles = StyleSheet.create({
         width: 48,
         height: 48,
         borderRadius: 24,
-        backgroundColor: '#8DF5AA',
+        backgroundColor: '#FF5722', // Hazard Orange
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 12,
     },
     avatarText: {
-        color: '#000',
+        color: '#FFFFFF',
         fontSize: 18,
-        fontWeight: '600',
+        fontWeight: '700',
     },
     textContainer: {
         flex: 1,
     },
     name: {
-        color: '#FFF',
+        color: '#111111',
         fontSize: 22,
-        fontWeight: '700',
+        fontWeight: '800',
         marginBottom: 2,
+        letterSpacing: -0.5,
     },
     subtitle: {
-        color: '#A0A0A0',
+        color: '#666666',
         fontSize: 14,
+        fontWeight: '500',
     },
     closeButton: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        backgroundColor: '#2A2A2A',
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        backgroundColor: '#FF5722',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    closeText: {
-        color: '#FFF',
-        fontSize: 16,
-        fontWeight: '500',
+        shadowColor: "#FF5722",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 5,
     },
     actionsRow: {
         flexDirection: 'row',
@@ -121,42 +124,42 @@ const styles = StyleSheet.create({
     actionButton: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#2A2A2A',
+        backgroundColor: '#F5F5F7',
         paddingVertical: 8,
         paddingHorizontal: 16,
-        borderRadius: 20,
+        borderRadius: 8, // More rigid, less bubbly
     },
     icon: {
         marginRight: 6,
     },
     actionText: {
-        color: '#FFF',
+        color: '#444444',
         fontSize: 14,
-        fontWeight: '500',
+        fontWeight: '600',
     },
     tabsRow: {
         flexDirection: 'row',
         alignItems: 'center',
     },
     activeTab: {
-        backgroundColor: '#333',
+        backgroundColor: '#111111',
         paddingVertical: 6,
         paddingHorizontal: 14,
-        borderRadius: 16,
+        borderRadius: 8,
         marginRight: 16,
     },
     activeTabText: {
-        color: '#FFF',
+        color: '#FFFFFF',
         fontSize: 12,
-        fontWeight: '600',
+        fontWeight: '700',
         letterSpacing: 0.5,
     },
     tab: {
         marginRight: 16,
     },
     tabText: {
-        color: '#A0A0A0',
+        color: '#666666',
         fontSize: 14,
-        fontWeight: '500',
+        fontWeight: '600',
     },
 });

@@ -12,26 +12,33 @@ interface FlightListItemProps {
 
 export function FlightListItem({
     airlineCode,
-    airlineColor,
     flightNumber,
-    routeCode,
     date,
     waypoints,
 }: FlightListItemProps) {
+
+    // Format date nicely (e.g. from YYYY-MM-DD to DD.MM.YY)
+    const formattedDate = date.split('-').reverse().join('.');
+
     return (
         <View style={styles.container}>
-            <View style={[styles.airlineIcon, { backgroundColor: airlineColor }]}>
-                <Text style={styles.airlineText}>{airlineCode}</Text>
+            <View style={styles.dateCol}>
+                <Text style={styles.dateText}>{formattedDate}</Text>
             </View>
-            <View style={styles.content}>
-                <View style={styles.topRow}>
-                    <Text style={styles.flightNumber}>{flightNumber}</Text>
-                    <Text style={styles.routeCode}>{routeCode}</Text>
-                    <Text style={styles.date}>{date}</Text>
-                </View>
-                <Text style={styles.routeNames}>
+
+            <View style={styles.aircraftCol}>
+                <Text style={styles.aircraftText}>{flightNumber}</Text>
+                <Text style={styles.typeText}>VFR</Text>
+            </View>
+
+            <View style={styles.routeCol}>
+                <Text style={styles.routeText}>
                     {waypoints.join(' → ')}
                 </Text>
+            </View>
+
+            <View style={styles.durationCol}>
+                <Text style={styles.durationText}>--</Text>
             </View>
         </View>
     );
@@ -41,50 +48,48 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 12,
+        paddingVertical: 14,
         paddingHorizontal: 16,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#333',
+        borderBottomColor: '#EAEAEE',
+        backgroundColor: '#FFFFFF',
     },
-    airlineIcon: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 12,
+    dateCol: {
+        width: 70,
     },
-    airlineText: {
-        color: '#FFF',
-        fontSize: 12,
-        fontWeight: '800',
-    },
-    content: {
-        flex: 1,
-    },
-    topRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 4,
-    },
-    flightNumber: {
-        color: '#A0A0A0',
+    dateText: {
+        color: '#666666',
         fontSize: 13,
         fontWeight: '500',
-        marginRight: 8,
     },
-    routeCode: {
-        color: '#666',
-        fontSize: 13,
+    aircraftCol: {
+        width: 100,
+    },
+    aircraftText: {
+        color: '#111111',
+        fontSize: 14,
+        fontWeight: '600',
+    },
+    typeText: {
+        color: '#A0A0A0',
+        fontSize: 11,
+        fontWeight: '500',
+    },
+    routeCol: {
         flex: 1,
     },
-    date: {
-        color: '#A0A0A0',
-        fontSize: 13,
+    routeText: {
+        color: '#111111',
+        fontSize: 14,
+        fontWeight: '600',
     },
-    routeNames: {
-        color: '#FFF',
-        fontSize: 16,
+    durationCol: {
+        width: 40,
+        alignItems: 'flex-end',
+    },
+    durationText: {
+        color: '#111111',
+        fontSize: 14,
         fontWeight: '600',
     },
 });

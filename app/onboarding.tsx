@@ -23,19 +23,20 @@ export default function OnboardingScreen() {
             style={styles.container}
         >
             <View style={styles.content}>
-                <Text style={styles.title}>Welcome Pilot.</Text>
-                <Text style={styles.subtitle}>Enter your name to begin logging your flight hours, aircraft stats, and training costs.</Text>
+                <Text style={styles.title}>Pilot Profile.</Text>
+                <Text style={styles.subtitle}>Enter your name to initialize your modern logbook, track flight hours, and manage aircraft stats.</Text>
 
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>FULL NAME</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Tap here"
-                        placeholderTextColor="#666"
+                        placeholder="Tap to enter name"
+                        placeholderTextColor="#A0A0A0"
                         value={name}
                         onChangeText={setName}
                         autoCapitalize="words"
                         autoCorrect={false}
+                        autoFocus={true}
                     />
                 </View>
 
@@ -44,7 +45,7 @@ export default function OnboardingScreen() {
                     onPress={handleComplete}
                     disabled={!name.trim()}
                 >
-                    <Text style={styles.buttonText}>Start Logging</Text>
+                    <Text style={styles.buttonText}>Initialize Logbook</Text>
                 </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>
@@ -54,60 +55,62 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#000',
+        backgroundColor: '#FFFFFF',
     },
     content: {
         flex: 1,
         justifyContent: 'center',
-        paddingHorizontal: 24,
+        paddingHorizontal: 32,
     },
     title: {
-        color: '#FFF',
-        fontSize: 40,
+        color: '#111111',
+        fontSize: 42,
         fontWeight: '800',
         marginBottom: 16,
-        letterSpacing: -1,
+        letterSpacing: -1.5,
     },
     subtitle: {
-        color: '#A0A0A0',
+        color: '#666666',
         fontSize: 16,
         lineHeight: 24,
         marginBottom: 48,
+        fontWeight: '500',
     },
     inputContainer: {
-        marginBottom: 32,
+        marginBottom: 40,
     },
     label: {
-        color: '#666',
+        color: '#A0A0A0',
         fontSize: 12,
         fontWeight: '700',
         letterSpacing: 1.5,
         marginBottom: 8,
     },
     input: {
-        color: '#FFF',
-        fontSize: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: '#333',
+        color: '#111111',
+        fontSize: 24,
+        fontWeight: '600',
+        borderBottomWidth: 2,
+        borderBottomColor: '#EAEAEE',
         paddingVertical: 12,
     },
     button: {
-        backgroundColor: '#8DF5AA',
-        paddingVertical: 16,
+        backgroundColor: '#FF5722',
+        paddingVertical: 18,
         borderRadius: 12,
         alignItems: 'center',
-        shadowColor: '#8DF5AA',
+        shadowColor: '#FF5722',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
-        shadowRadius: 12,
+        shadowRadius: 10,
         elevation: 5,
     },
     buttonDisabled: {
-        backgroundColor: '#333',
+        backgroundColor: '#F2F2F2',
         shadowOpacity: 0,
     },
     buttonText: {
-        color: '#000',
+        color: '#FFFFFF',
         fontSize: 18,
         fontWeight: '700',
     },
