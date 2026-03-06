@@ -1,34 +1,44 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { Upload, Plane, Settings, Users } from 'lucide-react-native';
+import { Settings, Plus, BookOpen } from 'lucide-react-native';
+import { useAppStore } from '@/store/useAppStore';
+import { useRouter } from 'expo-router';
 
-interface DashboardHeaderProps {
-    name: string;
-    subtitle: string;
-}
+export function DashboardHeader() {
+    const profileName = useAppStore((state) => state.profileName);
+    const router = useRouter();
 
-export function DashboardHeader({ name, subtitle }: DashboardHeaderProps) {
+    // Get initials for avatar
+    const getInitials = (name: string) => {
+        return name
+            .split(' ')
+            .map((n) => n[0])
+            .join('')
+            .substring(0, 2)
+            .toUpperCase();
+    };
+
     return (
         <View style={styles.container}>
             {/* Profile Row */}
             <View style={styles.profileRow}>
                 <View style={styles.avatarContainer}>
-                    <Text style={styles.avatarText}>AM</Text>
+                    <Text style={styles.avatarText}>{profileName ? getInitials(profileName) : 'PT'}</Text>
                 </View>
                 <View style={styles.textContainer}>
-                    <Text style={styles.name}>{name}</Text>
-                    <Text style={styles.subtitle}>{subtitle}</Text>
+                    <Text style={styles.name}>{profileName || 'Trainee Pilot'}</Text>
+                    <Text style={styles.subtitle}>My Training Logbook</Text>
                 </View>
-                <TouchableOpacity style={styles.closeButton}>
-                    <Text style={styles.closeText}>✕</Text>
+                <TouchableOpacity style={styles.closeButton} onPress={() => router.push('/add-flight')}>
+                    <Plus size={20} color="#FFF" />
                 </TouchableOpacity>
             </View>
 
             {/* Action Buttons */}
             <View style={styles.actionsRow}>
                 <TouchableOpacity style={styles.actionButton}>
-                    <Users size={16} color="#FFFFFF" style={styles.icon} />
-                    <Text style={styles.actionText}>Flighty Friends</Text>
+                    <BookOpen size={16} color="#FFFFFF" style={styles.icon} />
+                    <Text style={styles.actionText}>UK Licenses</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.actionButton}>
                     <Settings size={16} color="#FFFFFF" style={styles.icon} />
@@ -42,16 +52,10 @@ export function DashboardHeader({ name, subtitle }: DashboardHeaderProps) {
                     <Text style={styles.activeTabText}>ALL-TIME</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.tab}>
-                    <Text style={styles.tabText}>2026</Text>
+                    <Text style={styles.tabText}>PPL</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.tab}>
-                    <Text style={styles.tabText}>2025</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.tab}>
-                    <Text style={styles.tabText}>2024</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.tab}>
-                    <Text style={styles.tabText}>2023</Text>
+                    <Text style={styles.tabText}>CPL</Text>
                 </TouchableOpacity>
             </View>
         </View>

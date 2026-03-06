@@ -2,8 +2,20 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Upload, ChevronRight } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAppStore } from '@/store/useAppStore';
 
 export function PassportCard() {
+    const flights = useAppStore((state) => state.flights);
+
+    const totalFlights = flights.length;
+    const totalHours = flights.reduce((sum, flight) => sum + flight.durationHours, 0);
+
+    const uniqueAirports = new Set(flights.flatMap(f => [f.origin, f.destination])).size;
+    const uniqueAircraft = new Set(flights.map(f => f.aircraft)).size;
+
+    // Calculate total cost
+    const totalCost = flights.reduce((sum, flight) => sum + (flight.cost || 0), 0);
+
     return (
         <LinearGradient
             colors={['#1F1160', '#0B297E']}
@@ -13,8 +25,8 @@ export function PassportCard() {
         >
             <View style={styles.headerRow}>
                 <View>
-                    <Text style={styles.title}>ALL-TIME FLIGHTY PASSPORT</Text>
-                    <Text style={styles.subtitle}>✈ PASSPORT • PASS • PASAPORTE</Text>
+                    <Text style={styles.title}>TRAINING PASSPORT</Text>
+                    <Text style={styles.subtitle}>LOGBOOK SUMMARY</Text>
                 </View>
                 <TouchableOpacity>
                     <Upload size={20} color="#FFF" />
@@ -24,28 +36,28 @@ export function PassportCard() {
             <View style={styles.statsGrid}>
                 <View style={styles.statCell}>
                     <Text style={styles.statLabel}>FLIGHTS</Text>
-                    <Text style={styles.statValue}>25</Text>
-                    <Text style={styles.statSubValue}>12 Long Haul</Text>
+                    <Text style={styles.statValue}>{totalFlights}</Text>
+                    <Text style={styles.statSubValue}>Total recorded</Text>
                 </View>
                 <View style={styles.statCell}>
-                    <Text style={styles.statLabel}>DISTANCE</Text>
-                    <Text style={styles.statValue}>62,072 mi</Text>
-                    <Text style={styles.statSubValue}>2.5x around the world</Text>
+                    <Text style={styles.statLabel}>FLIGHT TIME</Text>
+                    <Text style={styles.statValue}>{totalHours.toFixed(1)}h</Text>
+                    <Text style={styles.statSubValue}>Total airborne</Text>
                 </View>
             </View>
 
             <View style={styles.statsGridSmall}>
                 <View style={styles.statCellSmall}>
-                    <Text style={styles.statLabel}>FLIGHT TIME</Text>
-                    <Text style={styles.statValueSmall}>5d 10h</Text>
+                    <Text style={styles.statLabel}>AIRCRAFT</Text>
+                    <Text style={styles.statValueSmall}>{uniqueAircraft}</Text>
                 </View>
                 <View style={styles.statCellSmall}>
                     <Text style={styles.statLabel}>AIRPORTS</Text>
-                    <Text style={styles.statValueSmall}>18</Text>
+                    <Text style={styles.statValueSmall}>{uniqueAirports}</Text>
                 </View>
                 <View style={styles.statCellSmall}>
-                    <Text style={styles.statLabel}>AIRLINES</Text>
-                    <Text style={styles.statValueSmall}>9</Text>
+                    <Text style={styles.statLabel}>TOTAL COST</Text>
+                    <Text style={styles.statValueSmall}>£{totalCost.toFixed(2)}</Text>
                 </View>
             </View>
 
