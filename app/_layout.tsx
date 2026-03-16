@@ -6,6 +6,8 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useAppStore } from '@/store/useAppStore';
+import Analytics from '@/utils/analytics';
+import { useAnalyticsNavigator } from '@/utils/useAnalyticsNavigator';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -19,6 +21,14 @@ export default function RootLayout() {
   const hasSeenOnboarding = useAppStore((state) => state.hasSeenOnboarding);
   const storeHydrated = useAppStore.persist.hasHydrated();
   const [isReady, setIsReady] = useState(false);
+
+  // Initialize Looking Glass Analytics
+  useEffect(() => {
+    Analytics.init('LG-FLIGHT-TRAINING');
+  }, []);
+
+  // Set up screen tracking
+  useAnalyticsNavigator();
 
   useEffect(() => {
     // Wait for Zustand to hydrate from AsyncStorage
