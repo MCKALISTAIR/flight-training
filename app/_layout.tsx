@@ -57,6 +57,7 @@ export default function RootLayout() {
         <Stack.Screen name="onboarding" options={{ headerShown: false, animation: 'fade' }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="add-flight" options={{ presentation: 'modal', title: 'Log a Flight' }} />
+        <Stack.Screen name="settings" options={{ presentation: 'modal', title: 'Settings' }} />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

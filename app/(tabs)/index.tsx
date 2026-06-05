@@ -43,6 +43,11 @@ export default function HomeScreen() {
                 routeCode={`${flight.waypoints[0]} → ${flight.waypoints[flight.waypoints.length - 1]}`}
                 date={flight.date}
                 waypoints={flight.waypoints}
+                durationHours={flight.durationHours}
+                flightType={flight.flightType}
+                isNight={flight.isNight}
+                isIFR={flight.isIFR}
+                landings={flight.landings}
               />
             ))}
           </View>

@@ -9,12 +9,19 @@ export interface Flight {
     waypoints: string[];
     durationHours: number;
     cost?: number;
+    flightType: 'dual' | 'solo' | 'pic';
+    isNight: boolean;
+    isIFR: boolean;
+    landings: number;
+    notes?: string;
 }
 
 interface AppState {
     profileName: string | null;
     hasSeenOnboarding: boolean;
     flights: Flight[];
+    defaultAircraft: string;
+    defaultCostPerHour: number;
 
     // Actions
     setProfileName: (name: string) => void;
@@ -22,6 +29,8 @@ interface AppState {
     addFlight: (flight: Omit<Flight, 'id'>) => void;
     removeFlight: (id: string) => void;
     resetStore: () => void;
+    setDefaultAircraft: (aircraft: string) => void;
+    setDefaultCostPerHour: (cost: number) => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -30,6 +39,8 @@ export const useAppStore = create<AppState>()(
             profileName: null,
             hasSeenOnboarding: false,
             flights: [],
+            defaultAircraft: '',
+            defaultCostPerHour: 0,
 
             setProfileName: (name) => set({ profileName: name }),
 
@@ -38,7 +49,7 @@ export const useAppStore = create<AppState>()(
             addFlight: (flight) => set((state) => ({
                 flights: [
                     ...state.flights,
-                    { ...flight, id: Math.random().toString(36).substr(2, 9) }
+                    { ...flight, id: Math.random().toString(36).substring(2, 11) }
                 ]
             })),
 
@@ -50,7 +61,12 @@ export const useAppStore = create<AppState>()(
                 profileName: null,
                 hasSeenOnboarding: false,
                 flights: [],
-            })
+                defaultAircraft: '',
+                defaultCostPerHour: 0,
+            }),
+
+            setDefaultAircraft: (aircraft) => set({ defaultAircraft: aircraft }),
+            setDefaultCostPerHour: (cost) => set({ defaultCostPerHour: cost }),
         }),
         {
             name: 'flight-training-storage',

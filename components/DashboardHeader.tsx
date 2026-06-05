@@ -40,7 +40,7 @@ export function DashboardHeader() {
                     <BookOpen size={16} color="#444" style={styles.icon} />
                     <Text style={styles.actionText}>UK Licenses</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.actionButton}>
+                <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/settings')}>
                     <Settings size={16} color="#444" style={styles.icon} />
                     <Text style={styles.actionText}>Settings</Text>
                 </TouchableOpacity>
